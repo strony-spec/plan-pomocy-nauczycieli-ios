@@ -1,0 +1,1388 @@
+<!doctype html>
+<html lang="pl" data-theme="colorful">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#315f89">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Plan pomocy">
+  <meta name="format-detection" content="telephone=no">
+  <title>Interaktywny plan pomocy nauczycieli</title>
+  <style>
+:root {
+  color-scheme: light;
+  --page: #f6f9fc;
+  --surface: #ffffff;
+  --surface-soft: #f1f7fb;
+  --ink: #18324a;
+  --muted: #587086;
+  --line: #cfdeea;
+  --accent: #315f89;
+  --accent-ink: #ffffff;
+  --accent-soft: #dceaf6;
+  --help-bg: #e4f4df;
+  --help-line: #8fbe7d;
+  --teacher-bg: #dfeef9;
+  --teacher-line: #88b7d8;
+  --free-bg: #ffffff;
+  --free-line: #d8e2ea;
+  --unavailable-bg: #e9edf0;
+  --unavailable-line: #aeb9c1;
+  --missing-bg: #ffe0df;
+  --missing-line: #dc7772;
+  --excluded-bg: #eef0f2;
+  --excluded-line: #c4c9ce;
+  --priority: #9b2f2b;
+  --shadow: 0 16px 42px rgba(37, 73, 104, 0.12);
+  --radius: 20px;
+  --menu-bg: #ffffff;
+}
+
+html[data-theme="contrast"] {
+  --page: #000000;
+  --surface: #ffffff;
+  --surface-soft: #ffffff;
+  --ink: #000000;
+  --muted: #242424;
+  --line: #000000;
+  --accent: #000000;
+  --accent-ink: #ffffff;
+  --accent-soft: #ffdf00;
+  --help-bg: #ffffff;
+  --help-line: #000000;
+  --teacher-bg: #ffdf00;
+  --teacher-line: #000000;
+  --free-bg: #ffffff;
+  --free-line: #000000;
+  --unavailable-bg: #d8d8d8;
+  --unavailable-line: #000000;
+  --missing-bg: #000000;
+  --missing-line: #ffdf00;
+  --excluded-bg: #efefef;
+  --excluded-line: #000000;
+  --priority: #000000;
+  --shadow: none;
+  --radius: 6px;
+}
+
+html[data-theme="professional"] {
+  --page: #edf2f6;
+  --surface: #ffffff;
+  --surface-soft: #f5f8fa;
+  --ink: #13283b;
+  --muted: #566b7d;
+  --line: #cbd6df;
+  --accent: #1f4e78;
+  --accent-ink: #ffffff;
+  --accent-soft: #dbe7f1;
+  --help-bg: #e8f1e5;
+  --help-line: #8ba980;
+  --teacher-bg: #e1ebf3;
+  --teacher-line: #779bb8;
+  --free-bg: #ffffff;
+  --free-line: #d5dde4;
+  --unavailable-bg: #e7eaed;
+  --unavailable-line: #aeb8c0;
+  --missing-bg: #f8dfde;
+  --missing-line: #c97470;
+  --excluded-bg: #eef0f2;
+  --excluded-line: #c7ccd1;
+  --priority: #8e2d29;
+  --shadow: 0 12px 34px rgba(17, 44, 68, 0.11);
+  --radius: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  overflow-x: hidden;
+  background: var(--page);
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--page);
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.45;
+  padding:
+    max(0px, env(safe-area-inset-top))
+    max(0px, env(safe-area-inset-right))
+    max(0px, env(safe-area-inset-bottom))
+    max(0px, env(safe-area-inset-left));
+}
+
+button,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-header {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 76px;
+  padding: 0.9rem clamp(1rem, 3vw, 2.5rem);
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-bottom: 4px solid var(--accent-soft);
+}
+
+html[data-theme="colorful"] .app-header {
+  box-shadow: inset 0 -4px 0 #f4c7d8, inset 0 -8px 0 #d8efc8;
+}
+
+.brand {
+  min-width: 0;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: clamp(1.15rem, 2.2vw, 1.65rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.brand p {
+  margin: 0.28rem 0 0;
+  font-size: 0.86rem;
+  opacity: 0.9;
+}
+
+.header-badge {
+  flex: 0 0 auto;
+  padding: 0.55rem 0.8rem;
+  color: #123b20;
+  background: #dcf4d5;
+  border: 2px solid #9cc88e;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+html[data-theme="contrast"] .header-badge {
+  color: #000;
+  background: #ffdf00;
+  border-color: #fff;
+  border-radius: 2px;
+}
+
+.menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0.6rem;
+  color: #111;
+  background: #fff;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  font-weight: 900;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 310px minmax(0, 1fr);
+  gap: 1.25rem;
+  width: min(1780px, 100%);
+  margin: 0 auto;
+  padding: 1.25rem clamp(1rem, 2.4vw, 2.25rem) 2rem;
+}
+
+.sidebar {
+  position: sticky;
+  top: 1.25rem;
+  align-self: start;
+  max-height: calc(100vh - 2.5rem);
+  max-height: calc(100dvh - 2.5rem);
+  overflow-y: auto;
+  padding: 1.2rem;
+  color: #182838;
+  background: var(--menu-bg) !important;
+  border: 2px solid #c9d6e1;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  scrollbar-width: thin;
+}
+
+html[data-theme="contrast"] .sidebar {
+  border: 4px solid #000;
+}
+
+.menu-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.menu-heading h2 {
+  margin: 0;
+  font-size: 1.12rem;
+}
+
+.menu-close {
+  display: none;
+  width: 44px;
+  height: 44px;
+  color: #111;
+  background: #fff;
+  border: 2px solid #1a2b3b;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+.control-group {
+  margin: 0 0 1rem;
+}
+
+.control-group label,
+.group-label {
+  display: block;
+  margin: 0 0 0.38rem;
+  color: #26394a;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.65rem 2.4rem 0.65rem 0.75rem;
+  color: #111 !important;
+  background-color: #fff !important;
+  border: 2px solid #aebfce;
+  border-radius: 10px;
+  outline: none;
+}
+
+select option,
+select optgroup {
+  color: #111 !important;
+  background: #fff !important;
+}
+
+select:focus,
+button:focus-visible {
+  outline: 4px solid #70a6d2;
+  outline-offset: 2px;
+}
+
+html[data-theme="contrast"] select:focus,
+html[data-theme="contrast"] button:focus-visible {
+  outline-color: #ffdf00;
+}
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.48rem;
+}
+
+.theme-button {
+  min-height: 46px;
+  padding: 0.55rem 0.7rem;
+  color: #1b2d3d;
+  background: #fff;
+  border: 2px solid #b6c5d1;
+  border-radius: 10px;
+  text-align: left;
+  font-weight: 750;
+}
+
+.theme-button[aria-pressed="true"] {
+  color: #fff;
+  background: #315f89;
+  border-color: #315f89;
+}
+
+.theme-button[data-theme-choice="contrast"][aria-pressed="true"] {
+  color: #000;
+  background: #ffdf00;
+  border-color: #000;
+}
+
+.font-tools {
+  display: none;
+  grid-template-columns: 48px 1fr 48px;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+html[data-theme="contrast"] .font-tools {
+  display: grid;
+}
+
+.font-button {
+  min-width: 48px;
+  min-height: 48px;
+  color: #000;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 6px;
+  font-weight: 900;
+}
+
+.font-value {
+  padding: 0.7rem 0.4rem;
+  color: #000;
+  background: #ffdf00;
+  border: 2px solid #000;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 900;
+}
+
+.menu-note {
+  margin: 1rem 0 0;
+  padding: 0.85rem;
+  color: #334859;
+  background: #f3f7fa;
+  border: 1px solid #d1dce5;
+  border-radius: 12px;
+  font-size: 0.84rem;
+}
+
+.content {
+  min-width: 0;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.summary-card {
+  min-width: 0;
+  padding: 0.9rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.summary-label {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.summary-value {
+  display: block;
+  overflow: hidden;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-weight: 850;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+}
+
+.workspace {
+  min-height: 400px;
+  padding: clamp(0.85rem, 2vw, 1.25rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.workspace-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.workspace-header h2 {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+  line-height: 1.2;
+}
+
+.workspace-header p {
+  margin: 0.3rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: flex-end;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.36rem 0.55rem;
+  color: var(--ink);
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 0.72rem;
+  height: 0.72rem;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.dot.help { color: #548c41; background: var(--help-bg); }
+.dot.teacher { color: #397da9; background: var(--teacher-bg); }
+.dot.missing { color: #bd4d49; background: var(--missing-bg); }
+.dot.excluded { color: #737b82; background: var(--excluded-bg); }
+
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 0.85rem;
+}
+
+.day-panel {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--surface-soft);
+  border: 2px solid var(--line);
+  border-radius: calc(var(--radius) - 4px);
+}
+
+.day-panel:nth-child(5n + 1) { --day-accent: #bcdaf0; }
+.day-panel:nth-child(5n + 2) { --day-accent: #cce8be; }
+.day-panel:nth-child(5n + 3) { --day-accent: #f4d7a5; }
+.day-panel:nth-child(5n + 4) { --day-accent: #e5cef2; }
+.day-panel:nth-child(5n + 5) { --day-accent: #f2cbd5; }
+
+html[data-theme="contrast"] .day-panel {
+  --day-accent: #ffdf00 !important;
+  border-width: 3px;
+}
+
+html[data-theme="professional"] .day-panel {
+  --day-accent: #dbe7f1 !important;
+}
+
+.day-title {
+  margin: 0;
+  padding: 0.72rem 0.8rem;
+  color: #18324a;
+  background: var(--day-accent);
+  border-bottom: 2px solid var(--line);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+html[data-theme="contrast"] .day-title {
+  color: #000;
+}
+
+.slot-list {
+  display: grid;
+}
+
+.slot {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  min-height: 84px;
+  background: var(--free-bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.slot:last-child {
+  border-bottom: 0;
+}
+
+.slot-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  padding: 0.5rem 0.25rem;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.55);
+  border-right: 1px solid var(--line);
+  font-size: 0.72rem;
+  line-height: 1.25;
+  text-align: center;
+}
+
+html[data-theme="contrast"] .slot-time {
+  color: #000;
+  background: #fff;
+}
+
+.slot-time strong {
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+.slot-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 0.58rem 0.62rem;
+  border-left: 5px solid var(--free-line);
+}
+
+.slot.help .slot-content {
+  background: var(--help-bg);
+  border-left-color: var(--help-line);
+}
+
+.slot.teacher .slot-content {
+  background: var(--teacher-bg);
+  border-left-color: var(--teacher-line);
+}
+
+.slot.unavailable .slot-content {
+  background: var(--unavailable-bg);
+  border-left-color: var(--unavailable-line);
+}
+
+.slot.missing .slot-content {
+  color: #651e1b;
+  background: var(--missing-bg);
+  border-left-color: var(--missing-line);
+}
+
+html[data-theme="contrast"] .slot.missing .slot-content {
+  color: #fff;
+}
+
+.slot.excluded .slot-content {
+  color: #5d646b;
+  background: var(--excluded-bg);
+  border-left-color: var(--excluded-line);
+}
+
+.slot-label {
+  margin-bottom: 0.16rem;
+  color: var(--muted);
+  font-size: 0.69rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.slot.missing .slot-label,
+.slot-content strong {
+  color: inherit;
+}
+
+.slot-content strong {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 0.92rem;
+  line-height: 1.25;
+}
+
+.slot-meta {
+  margin-top: 0.18rem;
+  color: var(--muted);
+  font-size: 0.74rem;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+html[data-theme="contrast"] .slot-meta,
+html[data-theme="contrast"] .slot-label {
+  color: inherit;
+}
+
+.empty-state {
+  padding: 2.5rem 1rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.missing-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.missing-row {
+  display: grid;
+  grid-template-columns: 150px 72px minmax(140px, 0.8fr) minmax(180px, 1.2fr) minmax(150px, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.75rem 0.85rem;
+  background: var(--missing-bg);
+  border: 2px solid var(--missing-line);
+  border-radius: calc(var(--radius) - 6px);
+}
+
+.missing-row.priority {
+  border-left-width: 8px;
+}
+
+.missing-row span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.missing-row .small {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+html[data-theme="contrast"] .missing-row,
+html[data-theme="contrast"] .missing-row .small {
+  color: #fff;
+}
+
+.backdrop {
+  display: none;
+  position: fixed;
+  z-index: 39;
+  inset: 0;
+  background: rgba(6, 20, 31, 0.62);
+}
+
+.footer {
+  margin-top: 1rem;
+  padding: 0.75rem 0.25rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-align: right;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 1120px) {
+  .summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .app-header {
+    position: sticky;
+    top: 0;
+  }
+
+  .header-badge {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+  }
+
+  .app-shell {
+    display: block;
+    padding: 0.9rem 0.75rem 1.5rem;
+  }
+
+  .sidebar {
+    position: fixed;
+    z-index: 40;
+    top: 0;
+    left: 0;
+    width: min(88vw, 360px);
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+    padding:
+      max(1rem, env(safe-area-inset-top))
+      max(1rem, env(safe-area-inset-right))
+      max(1rem, env(safe-area-inset-bottom))
+      max(1rem, env(safe-area-inset-left));
+    color: #182838;
+    background: #fff !important;
+    border: 0;
+    border-right: 3px solid #1f4e78;
+    border-radius: 0;
+    transform: translateX(-105%);
+    transition: transform 180ms ease-out;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .menu-close {
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .backdrop.open {
+    display: block;
+  }
+
+  body.menu-open {
+    overflow: hidden;
+  }
+
+  .workspace-header {
+    display: block;
+  }
+
+  .legend {
+    justify-content: flex-start;
+    margin-top: 0.75rem;
+  }
+
+  .week-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .brand p {
+    display: none;
+  }
+
+  .summary {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.55rem;
+  }
+
+  .summary-card {
+    padding: 0.72rem;
+  }
+
+  .summary-label {
+    font-size: 0.69rem;
+  }
+
+  .workspace {
+    padding: 0.7rem;
+  }
+
+  .missing-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .missing-row .subject-cell,
+  .missing-row .teacher-cell {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .app-header,
+  .sidebar,
+  .backdrop,
+  .summary {
+    display: none !important;
+  }
+
+  .app-shell {
+    display: block;
+    width: 100%;
+    padding: 0;
+  }
+
+  .workspace {
+    border: 0;
+    box-shadow: none;
+  }
+
+  .week-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .slot {
+    min-height: 72px;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <h1>Interaktywny plan pomocy nauczycieli</h1>
+      <p>Klasy 4–8 • plan tygodniowy</p>
+    </div>
+    <div class="header-badge" id="polishBadge">Język polski: pełna obsada</div>
+    <button class="menu-toggle" id="menuToggle" type="button" aria-controls="sidebar" aria-expanded="false">
+      <span aria-hidden="true">☰</span><span class="sr-only">Otwórz menu</span>
+    </button>
+  </header>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Menu planu">
+      <div class="menu-heading">
+        <h2>Widok planu</h2>
+        <button class="menu-close" id="menuClose" type="button" aria-label="Zamknij menu">×</button>
+      </div>
+
+      <div class="control-group">
+        <label for="viewSelect">Pokaż plan</label>
+        <select id="viewSelect">
+          <option value="aide">Według pomocy nauczyciela</option>
+          <option value="class">Według klasy</option>
+          <option value="missing">Lekcje bez przydziału</option>
+        </select>
+      </div>
+
+      <div class="control-group" id="aideGroup">
+        <label for="aideSelect">Wybierz pomoc</label>
+        <select id="aideSelect"></select>
+      </div>
+
+      <div class="control-group" id="classGroup" hidden>
+        <label for="classSelect">Wybierz klasę</label>
+        <select id="classSelect"></select>
+      </div>
+
+      <div class="control-group">
+        <label for="scopeSelect">Zakres planu</label>
+        <select id="scopeSelect"></select>
+      </div>
+
+      <div class="control-group">
+        <span class="group-label">Styl</span>
+        <div class="theme-grid" role="group" aria-label="Wybierz styl">
+          <button class="theme-button" type="button" data-theme-choice="colorful" aria-pressed="true">Kolorowy</button>
+          <button class="theme-button" type="button" data-theme-choice="contrast" aria-pressed="false">Kontrast</button>
+          <button class="theme-button" type="button" data-theme-choice="professional" aria-pressed="false">Profesjonalny</button>
+        </div>
+      </div>
+
+      <div class="control-group font-tools" aria-label="Rozmiar tekstu">
+        <button class="font-button" id="fontDown" type="button" aria-label="Zmniejsz tekst">A−</button>
+        <div class="font-value" id="fontValue" aria-live="polite">100%</div>
+        <button class="font-button" id="fontUp" type="button" aria-label="Powiększ tekst">A+</button>
+      </div>
+
+      <p class="menu-note" id="menuNote"></p>
+    </aside>
+
+    <div class="backdrop" id="backdrop" aria-hidden="true"></div>
+
+    <main class="content">
+      <section class="summary" id="summary" aria-label="Podsumowanie planu"></section>
+
+      <section class="workspace">
+        <div class="workspace-header">
+          <div>
+            <h2 id="workspaceTitle"></h2>
+            <p id="workspaceSubtitle"></p>
+          </div>
+          <div class="legend" id="legend" aria-label="Legenda"></div>
+        </div>
+        <div id="schedule" aria-live="polite"></div>
+      </section>
+
+      <footer class="footer">Plan działa lokalnie i nie wymaga połączenia z internetem.</footer>
+    </main>
+  </div>
+
+  <script>
+    const PLAN = {"title":"Interaktywny plan pomocy nauczycieli","sourceFile":"Plan_pracy_pomocy_RMang_RMj2_scalone_klasy_4-8.xlsx","days":["Poniedziałek","Wtorek","Środa","Czwartek","Piątek"],"periods":[{"period":1,"time":"08:30–09:15"},{"period":2,"time":"09:20–10:05"},{"period":3,"time":"10:15–11:00"},{"period":4,"time":"11:05–11:50"},{"period":5,"time":"12:10–12:55"},{"period":6,"time":"13:15–14:00"},{"period":7,"time":"14:05–14:50"},{"period":8,"time":"14:55–15:40"},{"period":9,"time":"15:45–16:30"}],"aides":["NMpomn","ZPwf","ZKImat","RMang","MDhis"],"classes":["Klasa 4","Klasa 5","Klasa 6","Klasa 7","Klasa 8"],"prioritySubjects":["język polski","język angielski","język 2","fizyka","chemia"],"assignments":[{"day":"Poniedziałek","period":1,"time":"08:30–09:15","className":"Klasa 4","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Poniedziałek","period":1,"time":"08:30–09:15","className":"Klasa 5","subject":"język angielski","teacher":"RMang","priority":true,"aide":"MDhis","requiresAide":true},{"day":"Poniedziałek","period":1,"time":"08:30–09:15","className":"Klasa 6","subject":"informatyka","teacher":"ZKImat","priority":false,"aide":"NMpomn","requiresAide":true},{"day":"Poniedziałek","period":1,"time":"08:30–09:15","className":"Klasa 7","subject":"muzyka","teacher":"PPmuz","priority":false,"aide":null,"requiresAide":false},{"day":"Poniedziałek","period":1,"time":"08:30–09:15","className":"Klasa 8","subject":"biologia","teacher":"PAprzy","priority":false,"aide":null,"requiresAide":true},{"day":"Poniedziałek","period":2,"time":"09:20–10:05","className":"Klasa 4","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Poniedziałek","period":2,"time":"09:20–10:05","className":"Klasa 5","subject":"muzyka","teacher":"PPmuz","priority":false,"aide":null,"requiresAide":false},{"day":"Poniedziałek","period":2,"time":"09:20–10:05","className":"Klasa 6","subject":"zajęcia z wychowawcą","teacher":"WBpol","priority":false,"aide":"NMpomn","requiresAide":true},{"day":"Poniedziałek","period":2,"time":"09:20–10:05","className":"Klasa 7","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Poniedziałek","period":2,"time":"09:20–10:05","className":"Klasa 8","subject":"edukacja zdrowotna","teacher":"PAprzy","priority":false,"aide":"RMang","requiresAide":true},{"day":"Poniedziałek","period":3,"time":"10:15–11:00","className":"Klasa 4","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Poniedziałek","period":3,"time":"10:15–11:00","className":"Klasa 5","subject":"edukacja zdrowotna","teacher":"PAprzy","priority":false,"aide":"MDhis","requiresAide":true},{"day":"Poniedziałek","period":3,"time":"10:15–11:00","className":"Klasa 6","subject":"muzyka","teacher":"PPmuz","priority":false,"aide":null,"requiresAide":false},{"day":"Poniedziałek","period":3,"time":"10:15–11:00","className":"Klasa 7","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Poniedziałek","period":3,"time":"10:15–11:00","className":"Klasa 8","subject":"język polski","teacher":"WBpol","priority":true,"aide":"RMang","requiresAide":true},{"day":"Poniedziałek","period":4,"time":"11:05–11:50","className":"Klasa 4","subject":"muzyka","teacher":"PPmuz","priority":false,"aide":null,"requiresAide":false},{"day":"Poniedziałek","period":4,"time":"11:05–11:50","className":"Klasa 5","subject":"biologia","teacher":"PAprzy","priority":false,"aide":"NMpomn","requiresAide":true},{"day":"Poniedziałek","period":4,"time":"11:05–11:50","className":"Klasa 6","subject":"język polski","teacher":"WBpol","priority":true,"aide":"MDhis","requiresAide":true},{"day":"Poniedziałek","period":4,"time":"11:05–11:50","className":"Klasa 7","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Poniedziałek","period":4,"time":"11:05–11:50","className":"Klasa 8","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Poniedziałek","period":5,"time":"12:10–12:55","className":"Klasa 4","subject":"edukacja zdrowotna","teacher":"PAprzy","priority":false,"aide":"NMpomn","requiresAide":true},{"day":"Poniedziałek","period":5,"time":"12:10–12:55","className":"Klasa 5","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Poniedziałek","period":5,"time":"12:10–12:55","className":"Klasa 6","subject":"język polski","teacher":"WBpol","priority":true,"aide":"MDhis","requiresAide":true},{"day":"Poniedziałek","period":5,"time":"12:10–12:55","className":"Klasa 7","subject":"chemia","teacher":"WAKfiz","priority":true,"aide":"RMang","requiresAide":true},{"day":"Poniedziałek","period":5,"time":"12:10–12:55","className":"Klasa 8","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Poniedziałek","period":6,"time":"13:15–14:00","className":"Klasa 4","subject":"przyroda","teacher":"PAprzy","priority":false,"aide":"ZKImat","requiresAide":true},{"day":"Poniedziałek","period":6,"time":"13:15–14:00","className":"Klasa 7","subject":"język polski","teacher":"WBpol","priority":true,"aide":"RMang","requiresAide":true},{"day":"Poniedziałek","period":6,"time":"13:15–14:00","className":"Klasa 8","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Poniedziałek","period":7,"time":"14:05–14:50","className":"Klasa 7","subject":"biologia","teacher":"PAprzy","priority":false,"aide":"ZPwf","requiresAide":true},{"day":"Poniedziałek","period":7,"time":"14:05–14:50","className":"Klasa 8","subject":"historia","teacher":"MDhis","priority":false,"aide":"ZKImat","requiresAide":true},{"day":"Wtorek","period":1,"time":"08:30–09:15","className":"Klasa 4","subject":"informatyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":true},{"day":"Wtorek","period":1,"time":"08:30–09:15","className":"Klasa 5","subject":"historia","teacher":"MDhis","priority":false,"aide":null,"requiresAide":true},{"day":"Wtorek","period":1,"time":"08:30–09:15","className":"Klasa 6","subject":"biologia","teacher":"PAprzy","priority":false,"aide":null,"requiresAide":true},{"day":"Wtorek","period":1,"time":"08:30–09:15","className":"Klasa 7","subject":"język polski","teacher":"WBpol","priority":true,"aide":"NMpomn","requiresAide":true},{"day":"Wtorek","period":1,"time":"08:30–09:15","className":"Klasa 8","subject":"język angielski","teacher":"RMang","priority":true,"aide":null,"requiresAide":true},{"day":"Wtorek","period":2,"time":"09:20–10:05","className":"Klasa 4","subject":"przyroda","teacher":"PAprzy","priority":false,"aide":"NMpomn","requiresAide":true},{"day":"Wtorek","period":2,"time":"09:20–10:05","className":"Klasa 5","subject":"język polski","teacher":"WBpol","priority":true,"aide":"RMang","requiresAide":true},{"day":"Wtorek","period":2,"time":"09:20–10:05","className":"Klasa 6","subject":"plastyka","teacher":"DSpla","priority":false,"aide":null,"requiresAide":true},{"day":"Wtorek","period":2,"time":"09:20–10:05","className":"Klasa 7","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Wtorek","period":2,"time":"09:20–10:05","className":"Klasa 8","subject":"historia","teacher":"MDhis","priority":false,"aide":null,"requiresAide":true},{"day":"Wtorek","period":3,"time":"10:15–11:00","className":"Klasa 4","subject":"plastyka","teacher":"DSpla","priority":false,"aide":"NMpomn","requiresAide":true},{"day":"Wtorek","period":3,"time":"10:15–11:00","className":"Klasa 5","subject":"język polski","teacher":"WBpol","priority":true,"aide":"ZPwf","requiresAide":true},{"day":"Wtorek","period":3,"time":"10:15–11:00","className":"Klasa 6","subject":"edukacja zdrowotna","teacher":"PAprzy","priority":false,"aide":"RMang","requiresAide":true},{"day":"Wtorek","period":3,"time":"10:15–11:00","className":"Klasa 7","subject":"historia","teacher":"MDhis","priority":false,"aide":null,"requiresAide":true},{"day":"Wtorek","period":3,"time":"10:15–11:00","className":"Klasa 8","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Wtorek","period":4,"time":"11:05–11:50","className":"Klasa 4","subject":"język polski","teacher":"WBpol","priority":true,"aide":"MDhis","requiresAide":true},{"day":"Wtorek","period":4,"time":"11:05–11:50","className":"Klasa 5","subject":"plastyka","teacher":"DSpla","priority":false,"aide":"NMpomn","requiresAide":true},{"day":"Wtorek","period":4,"time":"11:05–11:50","className":"Klasa 6","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Wtorek","period":4,"time":"11:05–11:50","className":"Klasa 7","subject":"biologia","teacher":"PAprzy","priority":false,"aide":"RMang","requiresAide":true},{"day":"Wtorek","period":4,"time":"11:05–11:50","className":"Klasa 8","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Wtorek","period":5,"time":"12:10–12:55","className":"Klasa 4","subject":"przyroda","teacher":"PAprzy","priority":false,"aide":"RMang","requiresAide":true},{"day":"Wtorek","period":5,"time":"12:10–12:55","className":"Klasa 5","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Wtorek","period":5,"time":"12:10–12:55","className":"Klasa 6","subject":"język polski","teacher":"WBpol","priority":true,"aide":"MDhis","requiresAide":true},{"day":"Wtorek","period":5,"time":"12:10–12:55","className":"Klasa 7","subject":"plastyka","teacher":"DSpla","priority":false,"aide":"NMpomn","requiresAide":true},{"day":"Wtorek","period":5,"time":"12:10–12:55","className":"Klasa 8","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Wtorek","period":6,"time":"13:15–14:00","className":"Klasa 5","subject":"zajęcia z wychowawcą","teacher":"ZPwf","priority":false,"aide":"MDhis","requiresAide":true},{"day":"Wtorek","period":6,"time":"13:15–14:00","className":"Klasa 7","subject":"edukacja zdrowotna","teacher":"PAprzy","priority":false,"aide":"NMpomn","requiresAide":true},{"day":"Wtorek","period":6,"time":"13:15–14:00","className":"Klasa 8","subject":"fizyka","teacher":"WAKfiz","priority":true,"aide":"ZKImat","requiresAide":true},{"day":"Wtorek","period":7,"time":"14:05–14:50","className":"Klasa 7","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Wtorek","period":7,"time":"14:05–14:50","className":"Klasa 8","subject":"chemia","teacher":"WAKfiz","priority":true,"aide":"ZKImat","requiresAide":true},{"day":"Wtorek","period":8,"time":"14:55–15:40","className":"Klasa 7","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Środa","period":1,"time":"08:30–09:15","className":"Klasa 4","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Środa","period":1,"time":"08:30–09:15","className":"Klasa 5","subject":"język angielski","teacher":"RMang","priority":true,"aide":"NMpomn","requiresAide":true},{"day":"Środa","period":1,"time":"08:30–09:15","className":"Klasa 6","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Środa","period":1,"time":"08:30–09:15","className":"Klasa 7","subject":"geografia","teacher":"LKMgeogr","priority":false,"aide":null,"requiresAide":true},{"day":"Środa","period":1,"time":"08:30–09:15","className":"Klasa 8","subject":"wiedza o społeczeństwie","teacher":"MDhis","priority":false,"aide":null,"requiresAide":true},{"day":"Środa","period":2,"time":"09:20–10:05","className":"Klasa 4","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Środa","period":2,"time":"09:20–10:05","className":"Klasa 5","subject":"historia","teacher":"MDhis","priority":false,"aide":null,"requiresAide":true},{"day":"Środa","period":2,"time":"09:20–10:05","className":"Klasa 6","subject":"język angielski","teacher":"RMang","priority":true,"aide":"NMpomn","requiresAide":true},{"day":"Środa","period":2,"time":"09:20–10:05","className":"Klasa 7","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Środa","period":2,"time":"09:20–10:05","className":"Klasa 8","subject":"geografia","teacher":"LKMgeogr","priority":false,"aide":null,"requiresAide":true},{"day":"Środa","period":3,"time":"10:15–11:00","className":"Klasa 4","subject":"język polski","teacher":"WBpol","priority":true,"aide":"ZPwf","requiresAide":true},{"day":"Środa","period":3,"time":"10:15–11:00","className":"Klasa 5","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Środa","period":3,"time":"10:15–11:00","className":"Klasa 6","subject":"geografia","teacher":"LKMgeogr","priority":false,"aide":null,"requiresAide":true},{"day":"Środa","period":3,"time":"10:15–11:00","className":"Klasa 7","subject":"język angielski","teacher":"RMang","priority":true,"aide":"NMpomn","requiresAide":true},{"day":"Środa","period":3,"time":"10:15–11:00","className":"Klasa 8","subject":"wiedza o społeczeństwie","teacher":"MDhis","priority":false,"aide":null,"requiresAide":true},{"day":"Środa","period":4,"time":"11:05–11:50","className":"Klasa 4","subject":"język angielski","teacher":"RMang","priority":true,"aide":"NMpomn","requiresAide":true},{"day":"Środa","period":4,"time":"11:05–11:50","className":"Klasa 5","subject":"język polski","teacher":"WBpol","priority":true,"aide":"ZPwf","requiresAide":true},{"day":"Środa","period":4,"time":"11:05–11:50","className":"Klasa 6","subject":"historia","teacher":"MDhis","priority":false,"aide":null,"requiresAide":true},{"day":"Środa","period":4,"time":"11:05–11:50","className":"Klasa 7","subject":"geografia","teacher":"LKMgeogr","priority":false,"aide":null,"requiresAide":true},{"day":"Środa","period":4,"time":"11:05–11:50","className":"Klasa 8","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Środa","period":5,"time":"12:10–12:55","className":"Klasa 4","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Środa","period":5,"time":"12:10–12:55","className":"Klasa 5","subject":"geografia","teacher":"LKMgeogr","priority":false,"aide":null,"requiresAide":true},{"day":"Środa","period":5,"time":"12:10–12:55","className":"Klasa 6","subject":"język polski","teacher":"WBpol","priority":true,"aide":"ZPwf","requiresAide":true},{"day":"Środa","period":5,"time":"12:10–12:55","className":"Klasa 7","subject":"historia","teacher":"MDhis","priority":false,"aide":null,"requiresAide":true},{"day":"Środa","period":5,"time":"12:10–12:55","className":"Klasa 8","subject":"język angielski","teacher":"RMang","priority":true,"aide":"NMpomn","requiresAide":true},{"day":"Środa","period":6,"time":"13:15–14:00","className":"Klasa 7","subject":"język polski","teacher":"WBpol","priority":true,"aide":"ZKImat","requiresAide":true},{"day":"Środa","period":6,"time":"13:15–14:00","className":"Klasa 8","subject":"fizyka","teacher":"WAKfiz","priority":true,"aide":"ZPwf","requiresAide":true},{"day":"Środa","period":7,"time":"14:05–14:50","className":"Klasa 7","subject":"fizyka","teacher":"WAKfiz","priority":true,"aide":"ZKImat","requiresAide":true},{"day":"Środa","period":7,"time":"14:05–14:50","className":"Klasa 8","subject":"język polski","teacher":"WBpol","priority":true,"aide":"ZPwf","requiresAide":true},{"day":"Czwartek","period":1,"time":"08:30–09:15","className":"Klasa 4","subject":"zajęcia praktyczno-techniczne","teacher":"DSpla","priority":false,"aide":null,"requiresAide":true},{"day":"Czwartek","period":1,"time":"08:30–09:15","className":"Klasa 5","subject":"język polski","teacher":"WBpol","priority":true,"aide":"MDhis","requiresAide":true},{"day":"Czwartek","period":1,"time":"08:30–09:15","className":"Klasa 6","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Czwartek","period":1,"time":"08:30–09:15","className":"Klasa 7","subject":"język angielski","teacher":"RMang","priority":true,"aide":null,"requiresAide":true},{"day":"Czwartek","period":1,"time":"08:30–09:15","className":"Klasa 8","subject":"zajęcia z wychowawcą","teacher":"NMpomn","priority":false,"aide":null,"requiresAide":true},{"day":"Czwartek","period":2,"time":"09:20–10:05","className":"Klasa 4","subject":"język angielski","teacher":"RMang","priority":true,"aide":null,"requiresAide":true},{"day":"Czwartek","period":2,"time":"09:20–10:05","className":"Klasa 5","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Czwartek","period":2,"time":"09:20–10:05","className":"Klasa 6","subject":"historia","teacher":"MDhis","priority":false,"aide":null,"requiresAide":true},{"day":"Czwartek","period":2,"time":"09:20–10:05","className":"Klasa 7","subject":"zajęcia z wychowawcą","teacher":"DBMpedsp","priority":false,"aide":null,"requiresAide":true},{"day":"Czwartek","period":2,"time":"09:20–10:05","className":"Klasa 8","subject":"język polski","teacher":"WBpol","priority":true,"aide":"NMpomn","requiresAide":true},{"day":"Czwartek","period":3,"time":"10:15–11:00","className":"Klasa 4","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Czwartek","period":3,"time":"10:15–11:00","className":"Klasa 5","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Czwartek","period":3,"time":"10:15–11:00","className":"Klasa 6","subject":"technika","teacher":"DSpla","priority":false,"aide":null,"requiresAide":true},{"day":"Czwartek","period":3,"time":"10:15–11:00","className":"Klasa 7","subject":"język polski","teacher":"WBpol","priority":true,"aide":"MDhis","requiresAide":true},{"day":"Czwartek","period":3,"time":"10:15–11:00","className":"Klasa 8","subject":"język angielski","teacher":"RMang","priority":true,"aide":"NMpomn","requiresAide":true},{"day":"Czwartek","period":4,"time":"11:05–11:50","className":"Klasa 4","subject":"historia","teacher":"MDhis","priority":false,"aide":null,"requiresAide":true},{"day":"Czwartek","period":4,"time":"11:05–11:50","className":"Klasa 5","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Czwartek","period":4,"time":"11:05–11:50","className":"Klasa 6","subject":"język angielski","teacher":"RMang","priority":true,"aide":null,"requiresAide":true},{"day":"Czwartek","period":4,"time":"11:05–11:50","className":"Klasa 7","subject":"język polski","teacher":"WBpol","priority":true,"aide":"NMpomn","requiresAide":true},{"day":"Czwartek","period":4,"time":"11:05–11:50","className":"Klasa 8","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Czwartek","period":5,"time":"12:10–12:55","className":"Klasa 4","subject":"zajęcia praktyczno-techniczne","teacher":"DSpla","priority":false,"aide":"MDhis","requiresAide":true},{"day":"Czwartek","period":5,"time":"12:10–12:55","className":"Klasa 5","subject":"język polski","teacher":"WBpol","priority":true,"aide":"RMang","requiresAide":true},{"day":"Czwartek","period":5,"time":"12:10–12:55","className":"Klasa 6","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Czwartek","period":5,"time":"12:10–12:55","className":"Klasa 7","subject":"informatyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":true},{"day":"Czwartek","period":5,"time":"12:10–12:55","className":"Klasa 8","subject":"edukacja dla bezpieczeństwa","teacher":"KMedb","priority":false,"aide":"NMpomn","requiresAide":true},{"day":"Czwartek","period":6,"time":"13:15–14:00","className":"Klasa 4","subject":"język polski","teacher":"WBpol","priority":true,"aide":"ZKImat","requiresAide":true},{"day":"Czwartek","period":6,"time":"13:15–14:00","className":"Klasa 5","subject":"technika","teacher":"DSpla","priority":false,"aide":"NMpomn","requiresAide":true},{"day":"Czwartek","period":6,"time":"13:15–14:00","className":"Klasa 6","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Czwartek","period":6,"time":"13:15–14:00","className":"Klasa 7","subject":"język 2","teacher":"RMang","priority":true,"aide":"MDhis","requiresAide":true},{"day":"Czwartek","period":7,"time":"14:05–14:50","className":"Klasa 7","subject":"język 2","teacher":"RMang","priority":true,"aide":"ZKImat","requiresAide":true},{"day":"Piątek","period":1,"time":"08:30–09:15","className":"Klasa 4","subject":"zajęcia z wychowawcą","teacher":"WJtsi","priority":false,"aide":null,"requiresAide":true},{"day":"Piątek","period":1,"time":"08:30–09:15","className":"Klasa 5","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Piątek","period":1,"time":"08:30–09:15","className":"Klasa 6","subject":"język angielski","teacher":"RMang","priority":true,"aide":null,"requiresAide":true},{"day":"Piątek","period":1,"time":"08:30–09:15","className":"Klasa 7","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Piątek","period":1,"time":"08:30–09:15","className":"Klasa 8","subject":"język polski","teacher":"WBpol","priority":true,"aide":"NMpomn","requiresAide":true},{"day":"Piątek","period":2,"time":"09:20–10:05","className":"Klasa 4","subject":"język angielski","teacher":"RMang","priority":true,"aide":null,"requiresAide":true},{"day":"Piątek","period":2,"time":"09:20–10:05","className":"Klasa 5","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Piątek","period":2,"time":"09:20–10:05","className":"Klasa 6","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Piątek","period":2,"time":"09:20–10:05","className":"Klasa 7","subject":"chemia","teacher":"WAKfiz","priority":true,"aide":null,"requiresAide":true},{"day":"Piątek","period":2,"time":"09:20–10:05","className":"Klasa 8","subject":"język polski","teacher":"WBpol","priority":true,"aide":"NMpomn","requiresAide":true},{"day":"Piątek","period":3,"time":"10:15–11:00","className":"Klasa 4","subject":"język polski","teacher":"WBpol","priority":true,"aide":"NMpomn","requiresAide":true},{"day":"Piątek","period":3,"time":"10:15–11:00","className":"Klasa 5","subject":"język angielski","teacher":"RMang","priority":true,"aide":null,"requiresAide":true},{"day":"Piątek","period":3,"time":"10:15–11:00","className":"Klasa 6","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Piątek","period":3,"time":"10:15–11:00","className":"Klasa 7","subject":"fizyka","teacher":"WAKfiz","priority":true,"aide":null,"requiresAide":true},{"day":"Piątek","period":3,"time":"10:15–11:00","className":"Klasa 8","subject":"informatyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":true},{"day":"Piątek","period":4,"time":"11:05–11:50","className":"Klasa 4","subject":"język polski","teacher":"WBpol","priority":true,"aide":"NMpomn","requiresAide":true},{"day":"Piątek","period":4,"time":"11:05–11:50","className":"Klasa 5","subject":"informatyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":true},{"day":"Piątek","period":4,"time":"11:05–11:50","className":"Klasa 6","subject":"wychowanie fizyczne","teacher":"ZPwf","priority":false,"aide":null,"requiresAide":false},{"day":"Piątek","period":4,"time":"11:05–11:50","className":"Klasa 7","subject":"język angielski","teacher":"RMang","priority":true,"aide":null,"requiresAide":true},{"day":"Piątek","period":4,"time":"11:05–11:50","className":"Klasa 8","subject":"chemia","teacher":"WAKfiz","priority":true,"aide":null,"requiresAide":true},{"day":"Piątek","period":5,"time":"12:10–12:55","className":"Klasa 4","subject":"matematyka","teacher":"ZKImat","priority":false,"aide":null,"requiresAide":false},{"day":"Piątek","period":5,"time":"12:10–12:55","className":"Klasa 6","subject":"język polski","teacher":"WBpol","priority":true,"aide":"ZPwf","requiresAide":true},{"day":"Piątek","period":5,"time":"12:10–12:55","className":"Klasa 8","subject":"język 2","teacher":"RMang","priority":true,"aide":"NMpomn","requiresAide":true},{"day":"Piątek","period":6,"time":"13:15–14:00","className":"Klasa 8","subject":"język 2","teacher":"RMang","priority":true,"aide":"ZKImat","requiresAide":true}],"stats":{"allLessons":144,"excludedLessons":44,"requiredLessons":100,"assignedLessons":62,"unassignedLessons":38,"polishTotal":25,"polishAssigned":25},"availability":{"MDhis":{"blockedDays":["Piątek"]},"ZPwf":{"minPeriodByDay":{"Wtorek":3,"Czwartek":3}}},"aliases":{"RMj2":"RMang"},"note":"RMang i RMj2 to ta sama osoba. RMang prowadzi język angielski oraz język 2 i w czasie własnych lekcji nie może pracować jako pomoc. Matematyka, wychowanie fizyczne i muzyka nie wymagają pomocy. Język polski ma pomoc na każdej lekcji."};
+(function () {
+  "use strict";
+
+  const elements = {
+    viewSelect: document.getElementById("viewSelect"),
+    aideSelect: document.getElementById("aideSelect"),
+    classSelect: document.getElementById("classSelect"),
+    scopeSelect: document.getElementById("scopeSelect"),
+    aideGroup: document.getElementById("aideGroup"),
+    classGroup: document.getElementById("classGroup"),
+    summary: document.getElementById("summary"),
+    workspaceTitle: document.getElementById("workspaceTitle"),
+    workspaceSubtitle: document.getElementById("workspaceSubtitle"),
+    legend: document.getElementById("legend"),
+    schedule: document.getElementById("schedule"),
+    menuNote: document.getElementById("menuNote"),
+    menuToggle: document.getElementById("menuToggle"),
+    menuClose: document.getElementById("menuClose"),
+    sidebar: document.getElementById("sidebar"),
+    backdrop: document.getElementById("backdrop"),
+    fontDown: document.getElementById("fontDown"),
+    fontUp: document.getElementById("fontUp"),
+    fontValue: document.getElementById("fontValue"),
+    polishBadge: document.getElementById("polishBadge")
+  };
+
+  function readPreference(key, fallback) {
+    try {
+      return window.localStorage.getItem(key) || fallback;
+    } catch (error) {
+      return fallback;
+    }
+  }
+
+  function savePreference(key, value) {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch (error) {
+      return;
+    }
+  }
+
+  const savedTheme = readPreference("plan-pomocy-theme", "colorful");
+  const savedScale = Number(readPreference("plan-pomocy-font-scale", "100"));
+  const state = {
+    view: "aide",
+    aide: PLAN.aides[0] || "",
+    className: PLAN.classes[0] || "",
+    scope: "week",
+    theme: ["colorful", "contrast", "professional"].includes(savedTheme) ? savedTheme : "colorful",
+    fontScale: Number.isFinite(savedScale) ? Math.min(130, Math.max(90, savedScale)) : 100
+  };
+
+  function escapeHtml(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function option(value, label) {
+    return "<option value=\"" + escapeHtml(value) + "\">" + escapeHtml(label) + "</option>";
+  }
+
+  function classLabel(className) {
+    const value = String(className || "");
+    return value.toLowerCase().indexOf("klasa ") === 0 ? value : "Klasa " + value;
+  }
+
+  function initializeControls() {
+    elements.aideSelect.innerHTML = PLAN.aides.map(function (aide) {
+      return option(aide, aide);
+    }).join("");
+    elements.classSelect.innerHTML = PLAN.classes.map(function (className) {
+      return option(className, classLabel(className));
+    }).join("");
+    elements.scopeSelect.innerHTML = option("week", "Cały tydzień") + PLAN.days.map(function (day) {
+      return option(day, day);
+    }).join("");
+
+    elements.aideSelect.value = state.aide;
+    elements.classSelect.value = state.className;
+    elements.scopeSelect.value = state.scope;
+  }
+
+  function applyTheme() {
+    document.documentElement.setAttribute("data-theme", state.theme);
+    document.querySelectorAll("[data-theme-choice]").forEach(function (button) {
+      button.setAttribute("aria-pressed", String(button.getAttribute("data-theme-choice") === state.theme));
+    });
+    const themeColor = state.theme === "contrast" ? "#000000" : state.theme === "professional" ? "#1f4e78" : "#315f89";
+    document.querySelector("meta[name='theme-color']").setAttribute("content", themeColor);
+    savePreference("plan-pomocy-theme", state.theme);
+  }
+
+  function applyFontScale() {
+    document.documentElement.style.fontSize = state.fontScale + "%";
+    elements.fontValue.textContent = state.fontScale + "%";
+    elements.fontDown.disabled = state.fontScale <= 90;
+    elements.fontUp.disabled = state.fontScale >= 130;
+    savePreference("plan-pomocy-font-scale", String(state.fontScale));
+  }
+
+  function openMenu() {
+    elements.sidebar.classList.add("open");
+    elements.backdrop.classList.add("open");
+    document.body.classList.add("menu-open");
+    elements.menuToggle.setAttribute("aria-expanded", "true");
+    window.setTimeout(function () {
+      elements.menuClose.focus();
+    }, 10);
+  }
+
+  function closeMenu() {
+    const wasOpen = elements.sidebar.classList.contains("open");
+    elements.sidebar.classList.remove("open");
+    elements.backdrop.classList.remove("open");
+    document.body.classList.remove("menu-open");
+    elements.menuToggle.setAttribute("aria-expanded", "false");
+    if (wasOpen && window.innerWidth <= 860) {
+      elements.menuToggle.focus();
+    }
+  }
+
+  function shownDays() {
+    return state.scope === "week" ? PLAN.days : [state.scope];
+  }
+
+  function lessonsForDays(days) {
+    return PLAN.assignments.filter(function (item) {
+      return days.includes(item.day);
+    });
+  }
+
+  function isAvailable(aide, day, period) {
+    const rule = PLAN.availability[aide];
+    if (!rule) {
+      return true;
+    }
+    if (rule.blockedDays && rule.blockedDays.includes(day)) {
+      return false;
+    }
+    if (rule.minPeriodByDay && rule.minPeriodByDay[day] && period < rule.minPeriodByDay[day]) {
+      return false;
+    }
+    return true;
+  }
+
+  function canonicalPerson(person) {
+    return PLAN.aliases[person] || person;
+  }
+
+  function hasOwnLesson(person, day, period) {
+    const canonical = canonicalPerson(person);
+    return PLAN.assignments.some(function (item) {
+      return item.day === day
+        && item.period === period
+        && canonicalPerson(item.teacher) === canonical;
+    });
+  }
+
+  function effectiveAide(item) {
+    if (!item.aide) {
+      return null;
+    }
+    return hasOwnLesson(item.aide, item.day, item.period) ? null : canonicalPerson(item.aide);
+  }
+
+  function getAideSlot(aide, day, period) {
+    const canonical = canonicalPerson(aide);
+    const ownLesson = PLAN.assignments.find(function (item) {
+      return item.day === day
+        && item.period === period
+        && canonicalPerson(item.teacher) === canonical;
+    });
+    if (ownLesson) {
+      return {
+        kind: "teacher",
+        label: "Własna lekcja",
+        title: ownLesson.subject,
+        meta: classLabel(ownLesson.className)
+      };
+    }
+
+    const helperLesson = PLAN.assignments.find(function (item) {
+      return item.day === day
+        && item.period === period
+        && effectiveAide(item) === canonical;
+    });
+    if (helperLesson) {
+      return {
+        kind: "help",
+        label: "Pomoc na lekcji",
+        title: helperLesson.subject,
+        meta: classLabel(helperLesson.className) + " • nauczyciel: " + helperLesson.teacher
+      };
+    }
+
+    if (!isAvailable(aide, day, period)) {
+      return {
+        kind: "unavailable",
+        label: "Niedostępność",
+        title: "Pomoc niedostępna",
+        meta: "Brak możliwości przydziału"
+      };
+    }
+
+    return {
+      kind: "free",
+      label: "Wolne",
+      title: "Brak przydziału",
+      meta: "Dostępny termin"
+    };
+  }
+
+  function getClassSlot(className, day, period) {
+    const lesson = PLAN.assignments.find(function (item) {
+      return item.day === day && item.period === period && item.className === className;
+    });
+    if (!lesson) {
+      return {
+        kind: "free",
+        label: "Brak zajęć",
+        title: "—",
+        meta: ""
+      };
+    }
+
+    if (!lesson.requiresAide) {
+      return {
+        kind: "excluded",
+        label: "Bez pomocy — zgodnie z zasadą",
+        title: lesson.subject,
+        meta: "Nauczyciel: " + lesson.teacher
+      };
+    }
+
+    const aide = effectiveAide(lesson);
+    if (aide) {
+      return {
+        kind: "help",
+        label: "Pomoc: " + aide,
+        title: lesson.subject,
+        meta: "Nauczyciel: " + lesson.teacher
+      };
+    }
+
+    return {
+      kind: "missing",
+      label: lesson.priority ? "Priorytet — brak pomocy" : "Brak przydzielonej pomocy",
+      title: lesson.subject,
+      meta: "Nauczyciel: " + lesson.teacher
+    };
+  }
+
+  function slotHtml(periodInfo, slot) {
+    const timeParts = String(periodInfo.time || "").split("-");
+    const start = timeParts[0] || "";
+    const end = timeParts[1] || "";
+    return "<div class=\"slot " + escapeHtml(slot.kind) + "\">" +
+      "<div class=\"slot-time\"><strong>" + escapeHtml(periodInfo.period) + "</strong><span>" + escapeHtml(start) + "</span><span>" + escapeHtml(end) + "</span></div>" +
+      "<div class=\"slot-content\"><span class=\"slot-label\">" + escapeHtml(slot.label) + "</span><strong>" + escapeHtml(slot.title) + "</strong>" +
+      (slot.meta ? "<span class=\"slot-meta\">" + escapeHtml(slot.meta) + "</span>" : "") + "</div></div>";
+  }
+
+  function dayPanel(day, slotProvider) {
+    const slots = PLAN.periods.map(function (periodInfo) {
+      return slotHtml(periodInfo, slotProvider(day, periodInfo.period));
+    }).join("");
+    return "<article class=\"day-panel\"><h3 class=\"day-title\">" + escapeHtml(day) + "</h3><div class=\"slot-list\">" + slots + "</div></article>";
+  }
+
+  function summaryCard(label, value) {
+    return "<div class=\"summary-card\"><span class=\"summary-label\">" + escapeHtml(label) + "</span><strong class=\"summary-value\">" + escapeHtml(value) + "</strong></div>";
+  }
+
+  function renderSummary(cards) {
+    elements.summary.innerHTML = cards.map(function (card) {
+      return summaryCard(card[0], card[1]);
+    }).join("");
+  }
+
+  function setLegend(items) {
+    elements.legend.innerHTML = items.map(function (item) {
+      return "<span class=\"legend-item\"><span class=\"dot " + escapeHtml(item[0]) + "\" aria-hidden=\"true\"></span>" + escapeHtml(item[1]) + "</span>";
+    }).join("");
+  }
+
+  function renderAideView(days) {
+    const aide = state.aide;
+    const canonical = canonicalPerson(aide);
+    const dayLessons = lessonsForDays(days);
+    const helpLessons = dayLessons.filter(function (item) { return effectiveAide(item) === canonical; });
+    const ownLessons = dayLessons.filter(function (item) { return canonicalPerson(item.teacher) === canonical; });
+    const priorityHelp = helpLessons.filter(function (item) { return item.priority; });
+    const workDays = new Set(helpLessons.concat(ownLessons).map(function (item) { return item.day; })).size;
+
+    elements.workspaceTitle.textContent = "Plan pracy: " + aide;
+    const roleNote = aide === "RMang" ? " • prowadzi język angielski i język 2 (RMj2)" : "";
+    elements.workspaceSubtitle.textContent = (state.scope === "week" ? "Pomoc i własne lekcje w całym tygodniu" : "Plan na dzień: " + state.scope) + roleNote;
+    setLegend([["help", "Praca jako pomoc"], ["teacher", "Własna lekcja"], ["excluded", "Niedostępność"]]);
+    renderSummary([
+      ["Lekcje jako pomoc", String(helpLessons.length)],
+      ["Własne lekcje", String(ownLessons.length)],
+      ["Dni pracy", String(workDays)],
+      ["Lekcje priorytetowe", String(priorityHelp.length)]
+    ]);
+    elements.schedule.innerHTML = "<div class=\"week-grid\">" + days.map(function (day) {
+      return dayPanel(day, function (slotDay, period) {
+        return getAideSlot(aide, slotDay, period);
+      });
+    }).join("") + "</div>";
+    elements.menuNote.textContent = aide === "RMang"
+      ? "RMang i RMj2 oznaczają tę samą osobę. Niebieskie pola obejmują jej lekcje języka angielskiego i języka 2; w tych godzinach nie może pełnić funkcji pomocy."
+      : "Zielone pola oznaczają pracę jako pomoc, a niebieskie — własne lekcje nauczyciela.";
+  }
+
+  function renderClassView(days) {
+    const className = state.className;
+    const classLessons = lessonsForDays(days).filter(function (item) { return item.className === className; });
+    const required = classLessons.filter(function (item) { return item.requiresAide; });
+    const assigned = required.filter(function (item) { return effectiveAide(item); });
+    const polish = classLessons.filter(function (item) { return item.subject === "język polski"; });
+    const polishAssigned = polish.filter(function (item) { return effectiveAide(item); });
+
+    elements.workspaceTitle.textContent = "Plan: " + classLabel(className);
+    elements.workspaceSubtitle.textContent = state.scope === "week" ? "Lekcje wraz z przypisaną pomocą nauczyciela" : "Plan na dzień: " + state.scope;
+    setLegend([["help", "Pomoc przydzielona"], ["missing", "Brak pomocy"], ["excluded", "Pomoc niewymagana"]]);
+    renderSummary([
+      ["Lekcje w zakresie", String(classLessons.length)],
+      ["Wymagają pomocy", String(required.length)],
+      ["Z przydziałem", assigned.length + "/" + required.length],
+      ["Język polski", polishAssigned.length + "/" + polish.length]
+    ]);
+    elements.schedule.innerHTML = "<div class=\"week-grid\">" + days.map(function (day) {
+      return dayPanel(day, function (slotDay, period) {
+        return getClassSlot(className, slotDay, period);
+      });
+    }).join("") + "</div>";
+    elements.menuNote.textContent = "Matematyka, WF i muzyka są oznaczone jako lekcje, które zgodnie z przyjętą zasadą nie wymagają pomocy.";
+  }
+
+  function renderMissingView(days) {
+    const missing = lessonsForDays(days).filter(function (item) {
+      return item.requiresAide && !effectiveAide(item);
+    }).sort(function (a, b) {
+      const dayDifference = PLAN.days.indexOf(a.day) - PLAN.days.indexOf(b.day);
+      return dayDifference || a.period - b.period || a.className.localeCompare(b.className, "pl");
+    });
+    const priorityMissing = missing.filter(function (item) { return item.priority; });
+    const affectedClasses = new Set(missing.map(function (item) { return item.className; })).size;
+    const overallRequired = lessonsForDays(days).filter(function (item) { return item.requiresAide; });
+    const overallAssigned = overallRequired.filter(function (item) { return effectiveAide(item); });
+
+    elements.workspaceTitle.textContent = "Lekcje bez przydzielonej pomocy";
+    elements.workspaceSubtitle.textContent = state.scope === "week" ? "Wolne przydziały w całym tygodniu" : "Braki na dzień: " + state.scope;
+    setLegend([["missing", "Brak pomocy"], ["help", "Priorytet w pierwszej kolejności"]]);
+    renderSummary([
+      ["Bez przydziału", String(missing.length)],
+      ["Priorytetowe", String(priorityMissing.length)],
+      ["Dotyczy klas", String(affectedClasses)],
+      ["Obsada łącznie", overallAssigned.length + "/" + overallRequired.length]
+    ]);
+
+    if (!missing.length) {
+      elements.schedule.innerHTML = "<div class=\"empty-state\"><strong>Wszystkie wymagane lekcje mają przydzieloną pomoc.</strong></div>";
+    } else {
+      elements.schedule.innerHTML = "<div class=\"missing-list\">" + missing.map(function (item) {
+        return "<article class=\"missing-row" + (item.priority ? " priority" : "") + "\">" +
+          "<span><strong>" + escapeHtml(item.day) + "</strong><br><span class=\"small\">" + escapeHtml(item.time) + "</span></span>" +
+          "<span><strong>Lekcja " + escapeHtml(item.period) + "</strong></span>" +
+          "<span><strong>" + escapeHtml(classLabel(item.className)) + "</strong></span>" +
+          "<span class=\"subject-cell\"><strong>" + escapeHtml(item.subject) + "</strong>" + (item.priority ? "<br><span class=\"small\">przedmiot priorytetowy</span>" : "") + "</span>" +
+          "<span class=\"teacher-cell\"><span class=\"small\">Nauczyciel</span><br><strong>" + escapeHtml(item.teacher) + "</strong></span></article>";
+      }).join("") + "</div>";
+    }
+    elements.menuNote.textContent = "Lista obejmuje tylko lekcje, które wymagają pomocy. Przedmioty priorytetowe są wyróżnione grubszą krawędzią.";
+  }
+
+  function render() {
+    const days = shownDays();
+    elements.aideGroup.hidden = state.view !== "aide";
+    elements.classGroup.hidden = state.view !== "class";
+
+    if (state.view === "aide") {
+      renderAideView(days);
+    } else if (state.view === "class") {
+      renderClassView(days);
+    } else {
+      renderMissingView(days);
+    }
+
+    elements.polishBadge.textContent = "Język polski: " + PLAN.stats.polishAssigned + "/" + PLAN.stats.polishTotal + " z pomocą";
+  }
+
+  elements.viewSelect.addEventListener("change", function (event) {
+    state.view = event.target.value;
+    render();
+    closeMenu();
+  });
+  elements.aideSelect.addEventListener("change", function (event) {
+    state.aide = event.target.value;
+    render();
+    closeMenu();
+  });
+  elements.classSelect.addEventListener("change", function (event) {
+    state.className = event.target.value;
+    render();
+    closeMenu();
+  });
+  elements.scopeSelect.addEventListener("change", function (event) {
+    state.scope = event.target.value;
+    render();
+    closeMenu();
+  });
+  document.querySelectorAll("[data-theme-choice]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      state.theme = button.getAttribute("data-theme-choice");
+      applyTheme();
+    });
+  });
+  elements.fontDown.addEventListener("click", function () {
+    state.fontScale = Math.max(90, state.fontScale - 10);
+    applyFontScale();
+  });
+  elements.fontUp.addEventListener("click", function () {
+    state.fontScale = Math.min(130, state.fontScale + 10);
+    applyFontScale();
+  });
+  elements.menuToggle.addEventListener("click", openMenu);
+  elements.menuClose.addEventListener("click", closeMenu);
+  elements.backdrop.addEventListener("click", closeMenu);
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 860) {
+      closeMenu();
+    }
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeMenu();
+    }
+  });
+
+  initializeControls();
+  applyTheme();
+  applyFontScale();
+  render();
+}());
+
+  </script>
+</body>
+</html>
