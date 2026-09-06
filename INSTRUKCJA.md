@@ -2,6 +2,15 @@
 
 Projekt zawiera interaktywny plan pomocy nauczycieli wbudowany w natywną aplikację iOS. Plan działa bez połączenia z internetem. Zapamiętywane są wybrany styl, widok, osoba, klasa, dzień i rozmiar tekstu.
 
+## Instalacja bezpośrednio z Safari
+
+1. Na iPhonie otwórz w Safari: `https://strony-spec.github.io/plan-pomocy-nauczycieli-ios/`.
+2. Dotknij przycisku **Udostępnij**.
+3. Wybierz **Do ekranu początkowego**.
+4. Dotknij **Dodaj**.
+
+Ta wersja nie wymaga certyfikatu Apple. Po pierwszym uruchomieniu plan jest dostępny również bez połączenia z internetem.
+
 ## Najprostsza instalacja na własnym iPhonie
 
 1. Rozpakuj plik ZIP na komputerze Mac.
