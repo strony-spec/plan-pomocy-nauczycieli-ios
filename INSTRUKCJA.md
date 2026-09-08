@@ -4,6 +4,10 @@ Projekt zawiera interaktywny plan pomocy nauczycieli wbudowany w natywną aplika
 
 ## Instalacja bezpośrednio z Safari
 
+Przed pierwszą publikacją w repozytorium GitHub otwórz **Settings → Pages** i
+w sekcji **Build and deployment** ustaw **Source: GitHub Actions**. Uruchom potem
+workflow **Deploy interactive schedule**.
+
 1. Na iPhonie otwórz w Safari: `https://strony-spec.github.io/plan-pomocy-nauczycieli-ios/`.
 2. Dotknij przycisku **Udostępnij**.
 3. Wybierz **Do ekranu początkowego**.

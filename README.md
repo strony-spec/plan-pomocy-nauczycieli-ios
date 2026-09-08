@@ -6,7 +6,10 @@ Natywna aplikacja iOS z interaktywnym planem pracy pomocy nauczycieli. Plan jest
 
 ## Wersja instalowana z Safari
 
-Po włączeniu GitHub Pages aplikacja jest dostępna pod adresem:
+Jednorazowo otwórz **Settings → Pages** w repozytorium i w sekcji
+**Build and deployment** ustaw **Source: GitHub Actions**. Następnie uruchom
+workflow **Deploy interactive schedule**. Po wdrożeniu aplikacja jest dostępna
+pod adresem:
 
 **https://strony-spec.github.io/plan-pomocy-nauczycieli-ios/**
 

@@ -15,7 +15,7 @@ Nie dodawaj certyfikatu ani profilu do repozytorium.
 
 ## Sekrety repozytorium
 
-W prywatnym repozytorium GitHub otwórz:
+W repozytorium GitHub otwórz:
 
 **Settings → Secrets and variables → Actions → New repository secret**
 
